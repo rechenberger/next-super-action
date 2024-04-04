@@ -1,27 +1,54 @@
-## Teampilot Starter
+# Super Action
 
-```bash
-pnpm install
-pnpm dev
+### 💡 Idea
+
+```tsx
+export default function Page() {
+
+  const blogPost = await getBlogPost()
+
+  return (<>
+    <h1>My Blog Post</h1>
+    <SuperActionButton action={async ({showCommands}) => {
+      const canSendEmail = await checkEmail()
+      return showCommands([
+        {
+          title: 'Share via Email',
+
+          action: async ({showDialog}) => {
+            const defaultEmail = await getDefaultEmail()
+            const sendEmail = async (email: string) => superAction(async ({showToast}) => {
+              await sendEmail({
+                email,
+                blogPost // Deeply nested 🤓
+              })
+              showToast({
+                  title: 'Email Sent',
+                },
+              })
+            })
+            if(defaultEmail) {
+              return sendEmail(defaultEmail)
+            } else {
+              return showDialog(() => {
+                return (<>
+                  <h2>Where do you want to send the email?</h2>
+                  <SuperActionForm action={({formData}) => {
+                    return sendEmail(formData.get('email'))
+                  }}>
+                    <input name="email" />
+                    <button type="submit">Send</submit>
+                  </SuperActionForm>
+                <>)
+              })
+            }
+
+        }
+      ])
+    }}>
+      Share
+    </SuperActionButton>
+  <>)
+
+}
 ```
-
-## Libraries
-
-- [Next.js](https://nextjs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [pnpm](https://pnpm.io/)
-- [shadcn/ui](https://ui.shadcn.com/)
-- [@teampilot/sdk](https://sdk.teampilot.ai/)
-
-## Setup Teampilot SDK
-
-1. Create a Teampilot account (at [https://teampilot.ai/](https://teampilot.ai/)) if you don't have one already
-2. Create a Teampilot team if you don't have one already
-3. Click the top left menu and select "Launchpads"
-4. Create a new Launchpad - From there you can configure the Launchpad to your needs (Not needed to get started)
-5. Activate the "Public" switch
-6. Click on "Save" at the bottom right of the page
-7. Create a `.env.local` file in the root of the project
-8. Copy the "ID" that is now visible under "Public", and paste it into the `TEAMPILOT_DEFAULT_LAUNCHPAD_SLUG_ID` variable in the `.env.local` file
-
-And thats it - you are now ready to use the Teampilot SDK in your project.

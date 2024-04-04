@@ -1,7 +1,6 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -45,7 +44,7 @@ export function MainTopNav({
         )
       })}
       <div className="flex-1" />
-      <Link
+      {/* <Link
         href={'https://teampilot.ai'}
         target="_blank"
         className={cn(
@@ -56,7 +55,7 @@ export function MainTopNav({
       >
         <div>Teampilot AI</div>
         <ExternalLink className="h-3 w-3" />
-      </Link>
+      </Link> */}
     </nav>
   )
 }

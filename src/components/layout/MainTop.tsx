@@ -10,9 +10,7 @@ export const MainTop = () => {
       <div className="container flex flex-row items-center justify-between gap-6 py-6">
         <Link href="/" className="flex flex-row items-center gap-3">
           <div className="text-xl">
-            <strong>
-              Teampilot <span className="text-primary">Starter</span>
-            </strong>
+            <strong className="text-primary">next-super-action</strong>
           </div>
         </Link>
         <div className="hidden flex-1 xl:flex">
@@ -20,7 +18,7 @@ export const MainTop = () => {
         </div>
         <div className="flex flex-row">
           <Link
-            href="https://github.com/SODEFA-GmbH-Co-KG/teampilot-starter"
+            href="https://github.com/rechenberger/next-super-action"
             target="_blank"
           >
             <Button variant={'ghost'} size="icon">
