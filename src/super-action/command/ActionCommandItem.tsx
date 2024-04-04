@@ -1,6 +1,6 @@
 'use client'
+import { CommandItem } from '@/components/ui/command'
 import { ReactNode } from 'react'
-import { CommandItem } from '../ui/command'
 import { ActionCommandConfig } from './ActionCommandProvider'
 
 export const ActionCommandItem = ({
