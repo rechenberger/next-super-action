@@ -14,12 +14,20 @@ export default function Page() {
               tryToast
               action={async () => {
                 'use server'
+                if (Math.random() < 0.5) {
+                  throw new Error('Failed to do the thing')
+                }
                 return {
                   toastTitle: 'Success',
                   toastDescription: 'You did it!',
                 }
               }}
-              command={{}}
+              command={{
+                shortcut: {
+                  key: 'f',
+                  shift: true,
+                },
+              }}
             >
               My First Action
             </ActionButton>

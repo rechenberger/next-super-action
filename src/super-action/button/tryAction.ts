@@ -1,8 +1,8 @@
 'use server'
 
-import { ActionButtonAction } from './ActionButton'
+import { type SuperAction } from '../action/superAction'
 
-export const tryAction = async (action: ActionButtonAction) => {
+export const tryAction = async (action: SuperAction) => {
   try {
     const result = await action()
     return [result, null] as const
