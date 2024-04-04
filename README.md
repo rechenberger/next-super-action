@@ -17,7 +17,11 @@ export default function Page() {
 
           action: async ({showDialog}) => {
             const defaultEmail = await getDefaultEmail()
-            const sendEmail = async (email: string) => superAction(async ({showToast}) => {
+            const sendEmail = async (email: string) => superAction(async ({showToast, showProgress}) => {
+              showProgress({
+                title: 'Sending Email',
+                percentage: 20
+              })
               await sendEmail({
                 email,
                 blogPost // Deeply nested 🤓
