@@ -8,7 +8,7 @@ import { SuperAction } from './createSuperAction'
 export type UseSuperActionOptions = {
   action: SuperAction
   disabled?: boolean
-  tryToast?: boolean
+  catchToast?: boolean
   askForConfirmation?: boolean
   stopPropagation?: boolean
 }
@@ -16,7 +16,7 @@ export type UseSuperActionOptions = {
 export const useSuperAction = (options: UseSuperActionOptions) => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const { action, disabled, tryToast, askForConfirmation, stopPropagation } =
+  const { action, disabled, catchToast, askForConfirmation, stopPropagation } =
     options
 
   const trigger = useCallback(
@@ -31,11 +31,6 @@ export const useSuperAction = (options: UseSuperActionOptions) => {
         if (!confirm('Are you sure?')) return
       }
       setIsLoading(true)
-      if (!tryToast) {
-        await action()
-        setIsLoading(false)
-        return
-      }
 
       await consumeSuperActionResponse({
         response: action(),
@@ -45,24 +40,16 @@ export const useSuperAction = (options: UseSuperActionOptions) => {
             description: t.description,
           })
         },
+        catch: catchToast
+          ? (e) => {
+              toast({
+                variant: 'destructive',
+                title: e.message,
+              })
+            }
+          : undefined,
       })
 
-      // const resultArray = await tryAction(action)
-      // if (isArray(resultArray)) {
-      //   const [result, error] = resultArray
-      //   if (error) {
-      //     toast({
-      //       variant: 'destructive',
-      //       title: error,
-      //     })
-      //   }
-      //   if (result?.toastTitle || result?.toastDescription) {
-      //     toast({
-      //       title: result.toastTitle,
-      //       description: result.toastDescription,
-      //     })
-      //   }
-      // }
       setIsLoading(false)
     },
     [
@@ -71,7 +58,7 @@ export const useSuperAction = (options: UseSuperActionOptions) => {
       disabled,
       isLoading,
       stopPropagation,
-      tryToast,
+      catchToast,
     ],
   )
 

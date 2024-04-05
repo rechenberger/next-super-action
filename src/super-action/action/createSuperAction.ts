@@ -6,10 +6,15 @@ export type SuperActionToast = {
   description?: ReactNode
 }
 
+export type SuperActionError = {
+  message?: string
+}
+
 export type SuperActionResponse<T> = {
   result?: T
   next?: Promise<SuperActionResponse<T>>
   toast?: SuperActionToast
+  error?: SuperActionError
 }
 
 type SuperActionContext = {
@@ -39,7 +44,18 @@ export const superAction = <T>(
     showToast,
   }
 
-  action(ctx).then((result) => complete({ result }))
+  action(ctx)
+    .then((result) => complete({ result }))
+    .catch((error) => {
+      // console.error('SOME ERROR', {
+      //   message: error?.message,
+      // })
+      complete({
+        error: {
+          message: error?.message,
+        },
+      })
+    })
 
   return firstPromise
 }

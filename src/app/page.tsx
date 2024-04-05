@@ -12,7 +12,7 @@ export default function Page() {
           </CardTitle>
           <CardContent>
             <ActionButton
-              tryToast
+              catchToast
               action={async () => {
                 'use server'
                 return superAction(async ({ showToast }) => {
@@ -24,9 +24,7 @@ export default function Page() {
                     title: 'Loading...',
                   })
                   await new Promise((resolve) => setTimeout(resolve, 1000))
-                  showToast({
-                    title: 'Done!',
-                  })
+                  throw new Error('Such Fail')
                 })
               }}
               command={{
