@@ -4,7 +4,7 @@ import { toast } from '@/components/ui/use-toast'
 import { isArray } from 'lodash-es'
 import { useCallback, useState } from 'react'
 import { tryAction } from '../button/tryAction'
-import { SuperAction } from './superAction'
+import { SuperAction } from './SuperAction'
 
 export type UseSuperActionOptions = {
   action: SuperAction
