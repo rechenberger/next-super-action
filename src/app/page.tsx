@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { superAction } from '@/super-action/action/createSuperAction'
+import { showToast, superAction } from '@/super-action/action/createSuperAction'
 import { ActionButton } from '@/super-action/button/ActionButton'
 
 export default function Page() {
@@ -15,7 +15,7 @@ export default function Page() {
               catchToast
               action={async () => {
                 'use server'
-                return superAction(async ({ showToast }) => {
+                return superAction(async () => {
                   showToast({
                     title: 'Starting...',
                   })

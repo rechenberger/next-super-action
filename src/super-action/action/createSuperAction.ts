@@ -1,3 +1,4 @@
+import { createServerContext } from '@sodefa/next-server-context'
 import { ReactNode } from 'react'
 import { createResolvablePromise } from './createResolvablePromise'
 
@@ -19,7 +20,10 @@ export type SuperActionResponse<T> = {
 
 type SuperActionContext = {
   showToast: (toast: SuperActionToast) => void
+  chain: (val: SuperActionResponse<any>) => void
 }
+
+const serverContext = createServerContext<SuperActionContext>()
 
 export const superAction = <T>(
   action: (ctx: SuperActionContext) => Promise<T>,
@@ -42,7 +46,10 @@ export const superAction = <T>(
 
   const ctx: SuperActionContext = {
     showToast,
+    chain,
   }
+
+  serverContext.set(ctx)
 
   action(ctx)
     .then((result) => complete({ result }))
@@ -61,3 +68,8 @@ export const superAction = <T>(
 }
 
 export type SuperAction<T = any> = () => Promise<SuperActionResponse<T>>
+
+export const showToast = (toast: SuperActionToast) => {
+  const ctx = serverContext.getOrThrow()
+  ctx.showToast(toast)
+}
