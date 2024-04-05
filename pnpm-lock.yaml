@@ -23,6 +23,9 @@ dependencies:
   '@radix-ui/react-toast':
     specifier: ^1.1.5
     version: 1.1.5(@types/react-dom@18.2.7)(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)
+  '@sodefa/next-server-context':
+    specifier: ^0.0.2
+    version: 0.0.2(react-dom@18.2.0)(react@18.2.0)(zod@3.22.4)
   '@teampilot/sdk':
     specifier: ^0.0.26
     version: 0.0.26(zod@3.22.4)
@@ -988,6 +991,18 @@ packages:
 
   /@rushstack/eslint-patch@1.6.1:
     resolution: {integrity: sha512-UY+FGM/2jjMkzQLn8pxcHGMaVLh9aEitG3zY2CiY7XHdLiz3bZOwa6oDxNqEMv7zZkV+cj5DOdz0cQ1BP5Hjgw==}
+    dev: false
+
+  /@sodefa/next-server-context@0.0.2(react-dom@18.2.0)(react@18.2.0)(zod@3.22.4):
+    resolution: {integrity: sha512-I8BAY2zwmdu4di2cKrE6Ich0lSavEJAreT/onjkDLvXXQBueQjLsCG+jaIC3xoh1XC/fFDfViSEBvUsqDvHuWA==}
+    peerDependencies:
+      react: ^18
+      react-dom: ^18
+      zod: ^3.21.4
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      zod: 3.22.4
     dev: false
 
   /@swc/helpers@0.5.2:

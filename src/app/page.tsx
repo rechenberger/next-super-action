@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { showToast, superAction } from '@/super-action/action/createSuperAction'
 import { ActionButton } from '@/super-action/button/ActionButton'
 
 export default function Page() {
@@ -11,16 +12,45 @@ export default function Page() {
           </CardTitle>
           <CardContent>
             <ActionButton
-              tryToast
+              catchToast
               action={async () => {
                 'use server'
-                if (Math.random() < 0.5) {
-                  throw new Error('Failed to do the thing')
-                }
-                return {
-                  toastTitle: 'Success',
-                  toastDescription: 'You did it!',
-                }
+                return superAction(async () => {
+                  showToast({
+                    title: 'Starting...',
+                  })
+                  await new Promise((resolve) => setTimeout(resolve, 1000))
+                  showToast({
+                    title: 'Loading...',
+                  })
+                  await new Promise((resolve) => setTimeout(resolve, 1000))
+
+                  const value = Math.random()
+
+                  showToast({
+                    title: `Done: ${value}`,
+                    description: (
+                      <ActionButton
+                        catchToast
+                        action={async () => {
+                          'use server'
+                          const v = value // FIXME: Next.js bug
+                          return superAction(async () => {
+                            showToast({
+                              title: 'Undoing...',
+                            })
+                            await new Promise((resolve) =>
+                              setTimeout(resolve, 1000),
+                            )
+                            throw new Error(`Could not undo: ${v}`)
+                          })
+                        }}
+                      >
+                        Undo
+                      </ActionButton>
+                    ),
+                  })
+                })
               }}
               command={{
                 shortcut: {

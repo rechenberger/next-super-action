@@ -30,7 +30,7 @@ export const ActionButton = (props: ActionButtonProps) => {
     component: Component = Button,
     hideIcon,
     hideButton,
-    tryToast,
+    catchToast,
     askForConfirmation,
     stopPropagation,
     command,
@@ -39,7 +39,7 @@ export const ActionButton = (props: ActionButtonProps) => {
   const { isLoading, trigger } = useSuperAction({
     action,
     disabled,
-    tryToast,
+    catchToast,
     askForConfirmation,
     stopPropagation,
   })
