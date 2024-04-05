@@ -24,7 +24,34 @@ export default function Page() {
                     title: 'Loading...',
                   })
                   await new Promise((resolve) => setTimeout(resolve, 1000))
-                  throw new Error('Such Fail')
+                  // throw new Error('Such Fail')
+                  const value = Math.random()
+                  showToast({
+                    title: `Done: ${value}`,
+                    description: (
+                      <ActionButton
+                        catchToast
+                        action={async () => {
+                          'use server'
+                          const v = value
+                          return superAction(async () => {
+                            showToast({
+                              title: 'Undoing...',
+                            })
+                            await new Promise((resolve) =>
+                              setTimeout(resolve, 1000),
+                            )
+                            // showToast({
+                            //   title: `Un-Done: ${v}`,
+                            // })
+                            throw new Error(`Could not undo: ${v}`)
+                          })
+                        }}
+                      >
+                        Undo
+                      </ActionButton>
+                    ),
+                  })
                 })
               }}
               command={{
