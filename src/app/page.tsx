@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { showToast } from '@/super-action/action/createSuperAction'
-import { ActionButtonServer } from '@/super-action/button/ActionButtonServer'
+import { showToast, superAction } from '@/super-action/action/createSuperAction'
+import { ActionButton } from '@/super-action/button/ActionButton'
 
 export default function Page() {
   return (
@@ -11,19 +11,21 @@ export default function Page() {
             <CardHeader>My First Action</CardHeader>
           </CardTitle>
           <CardContent>
-            <ActionButtonServer
+            <ActionButton
               catchToast
               action={async () => {
                 'use server'
-                showToast({
-                  title: 'Starting...',
+                return superAction(async () => {
+                  showToast({
+                    title: 'Starting...',
+                  })
+                  await new Promise((resolve) => setTimeout(resolve, 1000))
+                  showToast({
+                    title: 'Loading...',
+                  })
+                  await new Promise((resolve) => setTimeout(resolve, 1000))
+                  throw new Error('Such Fail')
                 })
-                await new Promise((resolve) => setTimeout(resolve, 1000))
-                showToast({
-                  title: 'Loading...',
-                })
-                await new Promise((resolve) => setTimeout(resolve, 1000))
-                throw new Error('Such Fail')
               }}
               command={{
                 shortcut: {
@@ -33,7 +35,7 @@ export default function Page() {
               }}
             >
               My First Action
-            </ActionButtonServer>
+            </ActionButton>
           </CardContent>
         </Card>
       </div>
