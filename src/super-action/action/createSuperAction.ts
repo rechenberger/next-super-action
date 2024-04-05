@@ -25,9 +25,7 @@ type SuperActionContext = {
 
 const serverContext = createServerContext<SuperActionContext>()
 
-export const superAction = <T>(
-  action: (ctx: SuperActionContext) => Promise<T>,
-) => {
+export const superAction = <T>(action: () => Promise<T>) => {
   let next = createResolvablePromise<SuperActionResponse<T>>()
   const firstPromise = next.promise
 
@@ -51,7 +49,7 @@ export const superAction = <T>(
 
   serverContext.set(ctx)
 
-  action(ctx)
+  action()
     .then((result) => complete({ result }))
     .catch((error) => {
       // console.error('SOME ERROR', {
