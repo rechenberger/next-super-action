@@ -1,10 +1,9 @@
 'use client'
 
 import { toast } from '@/components/ui/use-toast'
-import { isArray } from 'lodash-es'
 import { useCallback, useState } from 'react'
-import { tryAction } from '../button/tryAction'
-import { SuperAction } from './SuperAction'
+import { consumeSuperActionResponse } from './consumeSuperActionResponse'
+import { SuperAction } from './createSuperAction'
 
 export type UseSuperActionOptions = {
   action: SuperAction
@@ -17,48 +16,62 @@ export type UseSuperActionOptions = {
 export const useSuperAction = (options: UseSuperActionOptions) => {
   const [isLoading, setIsLoading] = useState(false)
 
+  const { action, disabled, tryToast, askForConfirmation, stopPropagation } =
+    options
+
   const trigger = useCallback(
     async (evt: MouseEvent) => {
       if (isLoading) return
-      if (options.disabled) return
-      if (options.stopPropagation) {
+      if (disabled) return
+      if (stopPropagation) {
         evt.stopPropagation()
         evt.preventDefault()
       }
-      if (options.askForConfirmation) {
+      if (askForConfirmation) {
         if (!confirm('Are you sure?')) return
       }
       setIsLoading(true)
-      if (!options.tryToast) {
-        await options.action()
+      if (!tryToast) {
+        await action()
         setIsLoading(false)
         return
       }
-      const resultArray = await tryAction(options.action)
-      if (isArray(resultArray)) {
-        const [result, error] = resultArray
-        if (error) {
+
+      await consumeSuperActionResponse({
+        response: action(),
+        onToast: (t) => {
           toast({
-            variant: 'destructive',
-            title: error,
+            title: t.title,
+            description: t.description,
           })
-        }
-        if (result?.toastTitle || result?.toastDescription) {
-          toast({
-            title: result.toastTitle,
-            description: result.toastDescription,
-          })
-        }
-      }
+        },
+      })
+
+      // const resultArray = await tryAction(action)
+      // if (isArray(resultArray)) {
+      //   const [result, error] = resultArray
+      //   if (error) {
+      //     toast({
+      //       variant: 'destructive',
+      //       title: error,
+      //     })
+      //   }
+      //   if (result?.toastTitle || result?.toastDescription) {
+      //     toast({
+      //       title: result.toastTitle,
+      //       description: result.toastDescription,
+      //     })
+      //   }
+      // }
       setIsLoading(false)
     },
     [
-      options.action,
-      options.askForConfirmation,
-      options.disabled,
+      action,
+      askForConfirmation,
+      disabled,
       isLoading,
-      options.stopPropagation,
-      options.tryToast,
+      stopPropagation,
+      tryToast,
     ],
   )
 
