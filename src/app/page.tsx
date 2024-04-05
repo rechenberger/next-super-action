@@ -24,8 +24,9 @@ export default function Page() {
                     title: 'Loading...',
                   })
                   await new Promise((resolve) => setTimeout(resolve, 1000))
-                  // throw new Error('Such Fail')
+
                   const value = Math.random()
+
                   showToast({
                     title: `Done: ${value}`,
                     description: (
@@ -33,7 +34,7 @@ export default function Page() {
                         catchToast
                         action={async () => {
                           'use server'
-                          const v = value
+                          const v = value // FIXME: Next.js bug
                           return superAction(async () => {
                             showToast({
                               title: 'Undoing...',
@@ -41,9 +42,6 @@ export default function Page() {
                             await new Promise((resolve) =>
                               setTimeout(resolve, 1000),
                             )
-                            // showToast({
-                            //   title: `Un-Done: ${v}`,
-                            // })
                             throw new Error(`Could not undo: ${v}`)
                           })
                         }}
